@@ -1,8 +1,8 @@
 package az.ingress.mapper;
 
 import az.ingress.dao.entity.StudentEntity;
+import az.ingress.model.common.PageableResponse;
 import az.ingress.model.request.StudentRequest;
-import az.ingress.model.response.PageableStudentResponse;
 import az.ingress.model.response.StudentResponse;
 import org.springframework.data.domain.Page;
 
@@ -29,10 +29,9 @@ public enum StudentMapper {
                 .build();
     }
 
-    public PageableStudentResponse buildPageableResponse(Page<StudentEntity> students) {
-        return PageableStudentResponse
-                .builder()
-                .students(students.map(this::mapEntityToResponse).toList())
+    public PageableResponse<StudentResponse> buildPageableResponse(Page<StudentEntity> students) {
+        return PageableResponse.<StudentResponse>builder()
+                .content(students.map(STUDENT_MAPPER::mapEntityToResponse).toList())
                 .totalElements(students.getTotalElements())
                 .totalPages(students.getTotalPages())
                 .hasNextPage(students.hasNext())

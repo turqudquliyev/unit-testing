@@ -1,4 +1,4 @@
-package az.ingress.model.request;
+package az.ingress.model.common;
 
 import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor(staticName = "of")
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomPageRequest {
+public class PageCriteria {
     @Min(0L) Integer page;
     @Min(1L) Integer size;
 }

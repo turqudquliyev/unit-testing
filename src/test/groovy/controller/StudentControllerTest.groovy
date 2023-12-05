@@ -2,9 +2,9 @@ package controller
 
 import az.ingress.controller.StudentController
 import az.ingress.exception.CustomExceptionHandler
-import az.ingress.model.request.CustomPageRequest
+import az.ingress.model.common.PageCriteria
+import az.ingress.model.common.PageableResponse
 import az.ingress.model.request.StudentRequest
-import az.ingress.model.response.PageableStudentResponse
 import az.ingress.model.response.StudentResponse
 import az.ingress.service.abstraction.StudentService
 import org.skyscreamer.jsonassert.JSONAssert
@@ -111,23 +111,24 @@ class StudentControllerTest extends Specification {
         def url = "/v1/students"
         def pageNumber = 0
         def pageSize = 10
-        def pageRequest = CustomPageRequest.of(pageNumber, pageSize)
+        def pageCriteria = PageCriteria.of(pageNumber, pageSize)
         def response = StudentResponse.builder()
                 .id(1L)
                 .firstName("firstName")
                 .lastName("lastName")
                 .age(20)
                 .build()
-        def pageableResponse = PageableStudentResponse.builder()
-                .students([response])
+        def pageableResponse = PageableResponse.<StudentResponse> builder()
+                .content([response])
                 .totalPages(1)
                 .totalElements(1)
                 .hasNextPage(false)
                 .build()
+
         def expectedResponse =
                 """
                     {
-                      "students": [
+                      "content": [
                         {
                           "id": 1,
                           "firstName": "firstName",
@@ -150,7 +151,7 @@ class StudentControllerTest extends Specification {
         ).andReturn()
 
         then:
-        1 * studentService.getAll(pageRequest) >> pageableResponse
+        1 * studentService.getAll(pageCriteria) >> pageableResponse
         jsonResponse.response.status == OK.value()
         JSONAssert.assertEquals(expectedResponse.toString(), jsonResponse.response.contentAsString.toString(), true)
     }

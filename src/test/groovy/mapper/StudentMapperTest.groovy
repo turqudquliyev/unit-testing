@@ -55,10 +55,10 @@ class StudentMapperTest extends Specification {
         def pageableResponse = STUDENT_MAPPER.buildPageableResponse(pageOfStudents)
 
         then:
-        entity.id == pageableResponse.students[pageNumber].id
-        entity.firstName == pageableResponse.students[pageNumber].firstName
-        entity.lastName == pageableResponse.students[pageNumber].lastName
-        entity.age == pageableResponse.students[pageNumber].age
+        entity.id == pageableResponse.content[pageNumber].id
+        entity.firstName == pageableResponse.content[pageNumber].firstName
+        entity.lastName == pageableResponse.content[pageNumber].lastName
+        entity.age == pageableResponse.content[pageNumber].age
         ++pageNumber == pageableResponse.totalPages
         total == pageableResponse.totalElements
         !pageableResponse.hasNextPage

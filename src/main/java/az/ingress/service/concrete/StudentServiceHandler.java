@@ -3,9 +3,9 @@ package az.ingress.service.concrete;
 import az.ingress.dao.entity.StudentEntity;
 import az.ingress.dao.repository.StudentRepository;
 import az.ingress.exception.NotFoundException;
-import az.ingress.model.request.CustomPageRequest;
+import az.ingress.model.common.PageCriteria;
+import az.ingress.model.common.PageableResponse;
 import az.ingress.model.request.StudentRequest;
-import az.ingress.model.response.PageableStudentResponse;
 import az.ingress.model.response.StudentResponse;
 import az.ingress.service.abstraction.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +36,9 @@ public class StudentServiceHandler implements StudentService {
         return STUDENT_MAPPER.mapEntityToResponse(student);
     }
 
-    public PageableStudentResponse getAll(CustomPageRequest request) {
-        var pageRequest = PageRequest.of(request.getPage(), request.getSize());
-        var students = studentRepository.findAll(pageRequest);
+    public PageableResponse<StudentResponse> getAll(PageCriteria pageCriteria) {
+        var pageable = PageRequest.of(pageCriteria.getPage(), pageCriteria.getSize());
+        var students = studentRepository.findAll(pageable);
         return STUDENT_MAPPER.buildPageableResponse(students);
     }
 

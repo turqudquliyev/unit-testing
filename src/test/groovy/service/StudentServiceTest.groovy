@@ -3,7 +3,8 @@ package service
 import az.ingress.dao.entity.StudentEntity
 import az.ingress.dao.repository.StudentRepository
 import az.ingress.exception.NotFoundException
-import az.ingress.model.request.CustomPageRequest
+import az.ingress.model.common.PageCriteria
+
 import az.ingress.model.request.StudentRequest
 import az.ingress.service.concrete.StudentServiceHandler
 import io.github.benas.randombeans.api.EnhancedRandom
@@ -75,20 +76,20 @@ class StudentServiceTest extends Specification {
         def pageNumber = 0
         def pageSize = 10
         def total = 1L
-        def pageRequest = CustomPageRequest.of(pageNumber, pageSize)
+        def pageCriteria = PageCriteria.of(pageNumber, pageSize)
         def pageable = PageRequest.of(pageNumber, pageSize)
         def entity = random.nextObject(StudentEntity)
         def pageOfStudents = new PageImpl([entity], pageable, total)
 
         when:
-        def pageableResponse = studentService.getAll(pageRequest)
+        def pageableResponse = studentService.getAll(pageCriteria)
 
         then:
         1 * studentRepository.findAll(pageable) >> pageOfStudents
-        entity.id == pageableResponse.students[pageNumber].id
-        entity.firstName == pageableResponse.students[pageNumber].firstName
-        entity.lastName == pageableResponse.students[pageNumber].lastName
-        entity.age == pageableResponse.students[pageNumber].age
+        entity.id == pageableResponse.content[pageNumber].id
+        entity.firstName == pageableResponse.content[pageNumber].firstName
+        entity.lastName == pageableResponse.content[pageNumber].lastName
+        entity.age == pageableResponse.content[pageNumber].age
         ++pageNumber == pageableResponse.totalPages
         total == pageableResponse.totalElements
         !pageableResponse.hasNextPage

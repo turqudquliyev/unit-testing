@@ -1,8 +1,8 @@
 package az.ingress.controller;
 
-import az.ingress.model.request.CustomPageRequest;
+import az.ingress.model.common.PageCriteria;
+import az.ingress.model.common.PageableResponse;
 import az.ingress.model.request.StudentRequest;
-import az.ingress.model.response.PageableStudentResponse;
 import az.ingress.model.response.StudentResponse;
 import az.ingress.service.abstraction.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +26,14 @@ public class StudentController {
         return studentService.save(request);
     }
 
+    @GetMapping
+    public PageableResponse<StudentResponse> retrieveAll(PageCriteria pageCriteria) {
+        return studentService.getAll(pageCriteria);
+    }
+
     @GetMapping("/{id}")
     public StudentResponse retrieveById(@PathVariable Long id) {
         return studentService.getById(id);
-    }
-
-    @GetMapping
-    public PageableStudentResponse retrieveAll(CustomPageRequest request) {
-        return studentService.getAll(request);
     }
 
     @PutMapping("/{id}")

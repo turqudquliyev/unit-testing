@@ -1,8 +1,8 @@
 package az.ingress.service.abstraction;
 
-import az.ingress.model.request.CustomPageRequest;
+import az.ingress.model.common.PageCriteria;
+import az.ingress.model.common.PageableResponse;
 import az.ingress.model.request.StudentRequest;
-import az.ingress.model.response.PageableStudentResponse;
 import az.ingress.model.response.StudentResponse;
 
 
@@ -11,7 +11,7 @@ public interface StudentService {
 
     StudentResponse getById(Long id);
 
-    PageableStudentResponse getAll(CustomPageRequest request);
+    PageableResponse<StudentResponse> getAll(PageCriteria pageCriteria);
 
     void updateById(Long id, StudentRequest request);
 

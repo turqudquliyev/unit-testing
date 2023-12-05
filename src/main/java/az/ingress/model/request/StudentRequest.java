@@ -1,5 +1,7 @@
 package az.ingress.model.request;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,5 +13,6 @@ import lombok.experimental.FieldDefaults;
 public class StudentRequest {
     String firstName;
     String lastName;
+    @Min(18L) @Max(200L)
     Integer age;
 }
